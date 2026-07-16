@@ -34,6 +34,8 @@ type State struct {
 	Channel         string           `json:"channel"`
 	LatencyMS       int64            `json:"latencyMs"`
 	QueueSize       int              `json:"queueSize"`
+	QueueCapacity   int              `json:"queueCapacity"`
+	MaxTextLength   int              `json:"maxTextLength"`
 	LastEvent       *Message         `json:"lastEvent,omitempty"`
 	LastError       string           `json:"lastError,omitempty"`
 	Reconnects      int              `json:"reconnects"`

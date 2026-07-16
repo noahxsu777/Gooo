@@ -5,7 +5,8 @@ let speaking = false;
 let pendingResume = false;
 const ttsQueue = [];
 const blockedUsers = new Set();
-const maxLength = 300;
+let maxLength = 300;
+let queueCapacity = 120;
 
 const el = (id) => document.getElementById(id);
 const statusEl = el('status');
@@ -27,6 +28,8 @@ function updateState(state) {
   latencyEl.textContent = state.latencyMs ?? '-';
   queueEl.textContent = state.queueSize ?? 0;
   lastEl.textContent = state.lastEvent ? `${state.lastEvent.user}: ${state.lastEvent.text}` : '-';
+  if (state.maxTextLength) maxLength = state.maxTextLength;
+  if (state.queueCapacity) queueCapacity = state.queueCapacity;
 }
 
 function shouldSpeak(msg) {
@@ -75,7 +78,7 @@ function speakNext() {
 
 function enqueue(msg) {
   if (!shouldSpeak(msg)) return;
-  if (ttsQueue.length >= 120) {
+  if (ttsQueue.length >= queueCapacity) {
     ttsQueue.shift();
   }
   ttsQueue.push(msg);

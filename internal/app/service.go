@@ -39,6 +39,8 @@ type Service struct {
 	cancelRun context.CancelFunc
 }
 
+const defaultMaxTextLength = 300
+
 type webhookPayload struct {
 	ID       string `json:"id"`
 	Type     string `json:"type"`
@@ -56,7 +58,7 @@ func NewService(cfg config.Config, logger *slog.Logger) *Service {
 		queue:   queue.New(cfg.QueueSize),
 		deduper: events.NewDeduper(5 * time.Minute),
 		filter: &tts.Filters{
-			MaxLength:      300,
+			MaxLength:      defaultMaxTextLength,
 			IgnoreCommands: true,
 			BlockedUsers:   map[string]struct{}{},
 			BlockedTypes:   map[string]struct{}{"gift": {}},
@@ -69,9 +71,11 @@ func NewService(cfg config.Config, logger *slog.Logger) *Service {
 			Retries: cfg.ReconnectMaxAttempts,
 		},
 		state: events.State{
-			Status:    events.StatusDisconnected,
-			Channel:   cfg.Channel,
-			UpdatedAt: time.Now(),
+			Status:        events.StatusDisconnected,
+			Channel:       cfg.Channel,
+			QueueCapacity: cfg.QueueSize,
+			MaxTextLength: defaultMaxTextLength,
+			UpdatedAt:     time.Now(),
 		},
 		limiter: webhook.NewRateLimiter(30, time.Minute),
 	}

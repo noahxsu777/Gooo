@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log/slog"
-	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,7 +14,6 @@ import (
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
 	cfg := config.Load()
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	service := app.NewService(cfg, logger)
