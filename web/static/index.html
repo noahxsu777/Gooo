@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>Gooo LIVE TTS</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Gooo LIVE TTS</h1>
+    <p class="hint">PWA demo para eventos LIVE con reconexión resiliente (sin prometer conexión eterna).</p>
+
+    <section class="card">
+      <div class="grid">
+        <div><strong>Estado:</strong> <span id="status">desconectado</span></div>
+        <div><strong>Latencia:</strong> <span id="latency">-</span> ms</div>
+        <div><strong>Cola:</strong> <span id="queue">0</span></div>
+        <div><strong>Último evento:</strong> <span id="last">-</span></div>
+      </div>
+    </section>
+
+    <section class="card controls">
+      <button id="enableAudio">Habilitar audio</button>
+      <button id="pause">Pausar</button>
+      <button id="resume">Reanudar</button>
+      <button id="skip">Saltar</button>
+      <button id="flush">Vaciar cola</button>
+      <button id="install" hidden>Instalar app</button>
+
+      <label>Volumen <input id="volume" type="range" min="0" max="1" step="0.1" value="1"></label>
+      <label>Velocidad <input id="rate" type="range" min="0.5" max="2" step="0.1" value="1"></label>
+      <label>Tono <input id="pitch" type="range" min="0" max="2" step="0.1" value="1"></label>
+      <label>Idioma <input id="lang" type="text" value="es-ES"></label>
+      <label>Voz <select id="voice"></select></label>
+    </section>
+
+    <section class="card">
+      <h2>Eventos</h2>
+      <ul id="events"></ul>
+    </section>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
