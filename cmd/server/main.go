@@ -29,10 +29,11 @@ func main() {
 	mux.Handle("/", http.FileServer(http.Dir("web/static")))
 
 	srv := &http.Server{
-		Addr:         cfg.Addr,
-		Handler:      logMiddleware(logger, corsMiddleware(cfg.AllowedOrigin, mux)),
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
+		Addr:        cfg.Addr,
+		Handler:     logMiddleware(logger, corsMiddleware(cfg.AllowedOrigin, mux)),
+		ReadTimeout: 10 * time.Second,
+		// SSE requiere conexiones largas; sin límite estricto de escritura.
+		WriteTimeout: 0,
 		IdleTimeout:  60 * time.Second,
 	}
 

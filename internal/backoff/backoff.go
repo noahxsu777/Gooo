@@ -16,8 +16,15 @@ func (e Exponential) Duration(attempt int) time.Duration {
 	if attempt < 0 {
 		attempt = 0
 	}
-	d := e.Base << attempt
-	if d > e.Max {
+	d := e.Base
+	for i := 0; i < attempt; i++ {
+		if d >= e.Max/2 {
+			d = e.Max
+			break
+		}
+		d *= 2
+	}
+	if d <= 0 || d > e.Max {
 		d = e.Max
 	}
 	if e.Jitter <= 0 {
