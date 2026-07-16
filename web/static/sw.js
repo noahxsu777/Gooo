@@ -19,8 +19,10 @@ self.addEventListener('fetch', (event) => {
   if (new URL(req.url).origin !== self.location.origin) return;
   event.respondWith(
     caches.match(req).then((cached) => cached || fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(req, copy));
+      if (res.ok) {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy));
+      }
       return res;
     }).catch(() => caches.match('/index.html')))
   );

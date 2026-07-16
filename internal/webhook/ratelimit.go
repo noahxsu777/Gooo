@@ -31,6 +31,11 @@ func (r *RateLimiter) Allow(key string) bool {
 	now := r.nowFunc()
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	for k, v := range r.clients {
+		if now.Sub(v.start) > r.window {
+			delete(r.clients, k)
+		}
+	}
 	entry := r.clients[key]
 	if entry.start.IsZero() || now.Sub(entry.start) > r.window {
 		entry = fixedWindow{count: 0, start: now}
